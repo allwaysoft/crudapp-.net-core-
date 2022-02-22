@@ -6,18 +6,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using crudf.Models;
 using MySql.Data.MySqlClient;
+
+using Microsoft.Extensions.Configuration;
+
+
 //function page[d]
 namespace crudf.Controllers
 {
     public class HomeController : Controller
     {
+        private IConfiguration Configuration;
+
+        public HomeController(IConfiguration _configuration)
+        {
+            Configuration = _configuration;
+        }
         public IActionResult Index()
 
             //function for index page and fetch from db[d]
         {
-            List<Customer> Customers = new List<Customer>(); 
-            
-            using (MySqlConnection con = new MySqlConnection("server=localhost ;user=root;database=customerdb;port=3306;password=root1234"))
+            List<Customer> Customers = new List<Customer>();
+            string connString = this.Configuration.GetConnectionString("DefaultConnection");
+
+            using (MySqlConnection con = new MySqlConnection(connString))
 
             {
                 con.Open();
@@ -49,7 +60,8 @@ namespace crudf.Controllers
         public  ActionResult Delete(int id)
 
         {
-            using (MySqlConnection con = new MySqlConnection("server=localhost ;user=root;database=customerdb;port=3306;password=root1234"))
+            string connString = this.Configuration.GetConnectionString("DefaultConnection");
+            using (MySqlConnection con = new MySqlConnection(connString))
 
             {
                 con.Open();
@@ -75,7 +87,8 @@ namespace crudf.Controllers
         public IActionResult Create(int CustomerId, string FullName, string CusCode, string Location)
         {
             //connection eka hadanva
-            using (MySqlConnection con = new MySqlConnection("server=localhost ;user=root;database=customerdb;port=3306;password=root1234"))
+            string connString = this.Configuration.GetConnectionString("DefaultConnection");
+            using (MySqlConnection con = new MySqlConnection(connString))
 
             {
                 con.Open();
@@ -97,8 +110,8 @@ namespace crudf.Controllers
         public IActionResult Edit(int id)
         {
             Customer Customer = new Customer();
-
-            using (MySqlConnection con = new MySqlConnection("server=localhost ;user=root;database=customerdb;port=3306;password=root1234"))
+            string connString = this.Configuration.GetConnectionString("DefaultConnection");
+            using (MySqlConnection con = new MySqlConnection(connString))
 
 
             {
@@ -127,7 +140,8 @@ namespace crudf.Controllers
         public IActionResult Edit(int CustomerId, string FullName, string CusCode, string Location)
 
         {
-            using (MySqlConnection con = new MySqlConnection("server=localhost ;user=root;database=customerdb;port=3306;password=root1234"))
+            string connString = this.Configuration.GetConnectionString("DefaultConnection");
+            using (MySqlConnection con = new MySqlConnection(connString))
 
             {
                 con.Open();
